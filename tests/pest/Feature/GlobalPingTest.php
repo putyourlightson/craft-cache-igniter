@@ -5,7 +5,7 @@
  */
 
 use putyourlightson\cacheigniter\CacheIgniter;
-use putyourlightson\cacheigniter\warmers\GlobalPingWarmer;
+use putyourlightson\cacheigniter\drivers\warmers\GlobalPingWarmer;
 
 beforeEach(function() {
     CacheIgniter::$plugin->set('warmer', new GlobalPingWarmer());

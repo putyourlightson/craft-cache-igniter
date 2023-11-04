@@ -6,8 +6,8 @@
 
 use craft\helpers\UrlHelper;
 use putyourlightson\cacheigniter\CacheIgniter;
+use putyourlightson\cacheigniter\drivers\warmers\GlobalPingWarmer;
 use putyourlightson\cacheigniter\records\UrlRecord;
-use putyourlightson\cacheigniter\warmers\GlobalPingWarmer;
 
 beforeEach(function() {
     CacheIgniter::$plugin->set('warmer', new GlobalPingWarmer());
