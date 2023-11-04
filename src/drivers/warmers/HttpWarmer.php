@@ -12,6 +12,7 @@ use Amp\MultiReasonException;
 use Amp\Sync\LocalSemaphore;
 use Craft;
 use craft\helpers\UrlHelper;
+use putyourlightson\blitz\drivers\generators\HttpGenerator;
 use putyourlightson\cacheigniter\CacheIgniter;
 use putyourlightson\cacheigniter\events\WarmUrlsEvent;
 use Throwable;
@@ -21,6 +22,10 @@ use function Amp\Iterator\fromIterable;
 use function Amp\Promise\wait;
 
 /**
+ * Based on Blitz’s HttpGenerator class.
+ *
+ * @see HttpGenerator
+ *
  * The Amp PHP framework is used for making HTTP requests and a concurrent
  * iterator is used to send the requests concurrently.
  * See https://amphp.org/http-client/concurrent

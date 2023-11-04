@@ -16,7 +16,7 @@
 {% set info %}
     <p>
         Locations are parsed by GlobalPing’s
-        <a href="https://github.com/jsdelivr/globalping#magic-field" target="_blank">magic field</a>.
+        <a href="https://github.com/jsdelivr/globalping#magic-field" target="_blank">magic field</a>, which converts the names of continents, regions, countries and cities to geographic regions.
     </p>
     <p>
         Recommended locations for full world coverage are:
@@ -39,6 +39,7 @@
         placeholder: 'US West',
     }],
     rows: warmer.locations,
+    minRows: 1,
     allowAdd: true,
     allowDelete: true,
     allowReorder: true,

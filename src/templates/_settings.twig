@@ -38,9 +38,13 @@
     {{ hiddenInput('pluginHandle', 'cache-igniter') }}
 
     <div id="warmer">
+        {% set info %}
+            {{ 'The warmer determines how and from where the cache is warmed. You can extend Cache Igniter to add your own or third-party warmers.'|t('cache-generation') }}
+            <a href="{{ docs ~ 'warmers' }}" class="go" target="_blank">Learn more</a>
+        {% endset %}
         {{ forms.selectField({
             label: 'Warmer'|t('cache-igniter'),
-            instructions: 'The warmer to use for cache warming.'|t('cache-igniter'),
+            instructions: instructions('The warmer to use for cache warming.', info),
             warning: (config.warmerType is defined ? configWarning('warmerType')),
             name: 'settings[warmerType]',
             options: warmerTypeOptions,
