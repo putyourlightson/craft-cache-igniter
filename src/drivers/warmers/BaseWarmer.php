@@ -3,12 +3,15 @@
  * @copyright Copyright (c) PutYourLightsOn
  */
 
-namespace putyourlightson\cacheigniter\warmers;
+namespace putyourlightson\cacheigniter\drivers\warmers;
 
 use Craft;
 use craft\base\SavableComponent;
 use putyourlightson\cacheigniter\events\WarmUrlsEvent;
 
+/**
+ * @property-read string|null $rateLimitDescription
+ */
 abstract class BaseWarmer extends SavableComponent implements WarmerInterface
 {
     /**

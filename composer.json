@@ -1,6 +1,6 @@
 {
   "name": "putyourlightson/craft-cache-igniter",
-  "description": "A global CDN cache and reverse proxy warmer.",
+  "description": "A global CDN and reverse proxy cache warmer.",
   "version": "1.0.0",
   "type": "craft-plugin",
   "homepage": "https://putyourlightson.com/plugins/cache-igniter",
@@ -15,6 +15,8 @@
   ],
   "require": {
     "php": "^8.0.2",
+    "amphp/http-client": "^4.0",
+    "amphp/parallel": "^1.0",
     "craftcms/cms": "^4.0"
   },
   "require-dev": {

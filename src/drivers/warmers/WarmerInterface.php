@@ -3,7 +3,7 @@
  * @copyright Copyright (c) PutYourLightsOn
  */
 
-namespace putyourlightson\cacheigniter\warmers;
+namespace putyourlightson\cacheigniter\drivers\warmers;
 
 interface WarmerInterface
 {

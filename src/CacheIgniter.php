@@ -18,12 +18,12 @@ use Psr\Log\LogLevel;
 use putyourlightson\blitz\events\RefreshCacheEvent;
 use putyourlightson\blitz\events\RefreshSiteCacheEvent;
 use putyourlightson\blitz\services\RefreshCacheService;
+use putyourlightson\cacheigniter\drivers\warmers\BaseWarmer;
 use putyourlightson\cacheigniter\helpers\WarmerHelper;
 use putyourlightson\cacheigniter\models\SettingsModel;
 use putyourlightson\cacheigniter\services\RefreshService;
 use putyourlightson\cacheigniter\services\WarmService;
 use putyourlightson\cacheigniter\utilities\WarmUtility;
-use putyourlightson\cacheigniter\warmers\BaseWarmer;
 use yii\base\Event;
 use yii\log\Logger;
 

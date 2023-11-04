@@ -40,7 +40,7 @@
     <div id="warmer">
         {{ forms.selectField({
             label: 'Warmer'|t('cache-igniter'),
-            instructions: 'The warmer to use for warming a CDN.'|t('cache-igniter'),
+            instructions: 'The warmer to use for cache warming.'|t('cache-igniter'),
             warning: (config.warmerType is defined ? configWarning('warmerType')),
             name: 'settings[warmerType]',
             options: warmerTypeOptions,
@@ -49,11 +49,11 @@
             first: true,
         }) }}
 
-        {% for warmerObject in warmers %}
-            {% set isCurrent = (className(warmer) == className(warmerObject)) %}
-            <div id="{{ className(warmer)|id }}" {{ not isCurrent ? 'class="hidden"' }}>
-                {% namespace 'warmerSettings[' ~ className(warmer) ~ ']' %}
-                    {{ (isCurrent ? warmer : warmerObject).settingsHtml|raw }}
+        {% for warmerDriver in warmerDrivers %}
+            {% set isCurrent = (className(warmer) == className(warmerDriver)) %}
+            <div id="{{ className(warmerDriver)|id }}" {{ not isCurrent ? 'class="hidden"' }}>
+                {% namespace 'warmerSettings[' ~ className(warmerDriver) ~ ']' %}
+                    {{ (isCurrent ? warmer : warmerDriver).settingsHtml|raw }}
                 {% endnamespace %}
             </div>
         {% endfor %}

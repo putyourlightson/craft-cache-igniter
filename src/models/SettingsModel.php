@@ -7,7 +7,7 @@ namespace putyourlightson\cacheigniter\models;
 
 use Craft;
 use craft\base\Model;
-use putyourlightson\cacheigniter\warmers\GlobalPingWarmer;
+use putyourlightson\cacheigniter\drivers\warmers\GlobalPingWarmer;
 
 /**
  * @property-read array $regionOptions
@@ -44,7 +44,7 @@ class SettingsModel extends Model
     /**
      * The number of seconds to wait before warming refreshed site URIs.
      */
-    public int $refreshDelay = 60;
+    public int $refreshDelay = 30;
 
     /**
      * URLs that should appear in the utility by default.

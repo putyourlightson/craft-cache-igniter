@@ -3,7 +3,7 @@
  * @copyright Copyright (c) PutYourLightsOn
  */
 
-namespace putyourlightson\cacheigniter\warmers;
+namespace putyourlightson\cacheigniter\drivers\warmers;
 
 use Craft;
 use craft\helpers\UrlHelper;
@@ -128,7 +128,7 @@ class GlobalPingWarmer extends BaseWarmer
      */
     public function getSettingsHtml(): ?string
     {
-        return Craft::$app->getView()->renderTemplate('cache-igniter/_warmers/globalping/settings', [
+        return Craft::$app->getView()->renderTemplate('cache-igniter/_drivers/warmers/globalping/settings', [
             'warmer' => $this,
         ]);
     }

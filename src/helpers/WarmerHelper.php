@@ -7,10 +7,10 @@ namespace putyourlightson\cacheigniter\helpers;
 
 use craft\events\RegisterComponentTypesEvent;
 use putyourlightson\cacheigniter\CacheIgniter;
-use putyourlightson\cacheigniter\warmers\BaseWarmer;
-use putyourlightson\cacheigniter\warmers\DummyWarmer;
-use putyourlightson\cacheigniter\warmers\GlobalPingWarmer;
-use putyourlightson\cacheigniter\warmers\HttpWarmer;
+use putyourlightson\cacheigniter\drivers\warmers\BaseWarmer;
+use putyourlightson\cacheigniter\drivers\warmers\DummyWarmer;
+use putyourlightson\cacheigniter\drivers\warmers\GlobalPingWarmer;
+use putyourlightson\cacheigniter\drivers\warmers\HttpWarmer;
 use yii\base\Event;
 
 class WarmerHelper
@@ -47,11 +47,11 @@ class WarmerHelper
     }
 
     /**
-     * Returns all warmers.
+     * Returns all warmer drivers.
      *
      * @return BaseWarmer[]
      */
-    public static function getAllWarmers(): array
+    public static function getAllWarmerDrivers(): array
     {
         return self::createWarmers(self::getAllTypes());
     }

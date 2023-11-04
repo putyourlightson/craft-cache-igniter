@@ -5,7 +5,7 @@
 
 # Cache Igniter Plugin for Craft CMS
 
-A global CDN cache and reverse proxy warmer. Integrates with Blitz.
+A global CDN and reverse proxy cache warmer. Integrates with Blitz.
 
 ## Documentation
 

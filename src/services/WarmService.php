@@ -80,7 +80,7 @@ class WarmService extends Component
         Queue::push(
             new WarmJob(),
             CacheIgniter::$plugin->settings->warmJobPriority,
-            CacheIgniter::$plugin->settings->refreshDelay,
+            $refreshDelay,
         );
     }
 }

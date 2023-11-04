@@ -40,6 +40,6 @@ class WarmJob extends BaseJob
      */
     protected function defaultDescription(): string
     {
-        return Craft::t('cache-igniter', 'Warming CDN URLs');
+        return Craft::t('cache-igniter', 'Warming Cached URLs');
     }
 }

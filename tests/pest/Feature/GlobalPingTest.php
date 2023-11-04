@@ -26,4 +26,3 @@ test('Fetching the rate limit from the API returns a valid result', function() {
     expect($rateLimitDescription)
         ->toBeString();
 });
-

@@ -8,8 +8,8 @@ namespace putyourlightson\cacheigniter\controllers;
 use Craft;
 use craft\web\Controller;
 use putyourlightson\cacheigniter\CacheIgniter;
+use putyourlightson\cacheigniter\drivers\warmers\BaseWarmer;
 use putyourlightson\cacheigniter\helpers\WarmerHelper;
-use putyourlightson\cacheigniter\warmers\BaseWarmer;
 use yii\web\Response;
 
 class SettingsController extends Controller
@@ -49,14 +49,14 @@ class SettingsController extends Controller
         // Validate the driver so that any errors will be displayed
         $warmer->validate();
 
-        $warmers = WarmerHelper::getAllWarmers();
+        $warmerDrivers = WarmerHelper::getAllWarmerDrivers();
 
         return $this->renderTemplate('cache-igniter/_settings', [
             'settings' => $settings,
             'siteOptions' => $siteOptions,
             'warmer' => $warmer,
-            'warmers' => $warmers,
-            'warmerTypeOptions' => array_map([$this, '_getSelectOption'], $warmers),
+            'warmerDrivers' => $warmerDrivers,
+            'warmerTypeOptions' => array_map([$this, '_getSelectOption'], $warmerDrivers),
         ]);
     }
 
