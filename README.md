@@ -5,7 +5,7 @@
 
 # Cache Igniter Plugin for Craft CMS
 
-A global CDN and reverse proxy cache warmer. Integrates with Blitz.
+Cache Igniter helps ensure that your site's cache remains warm on global CDNs and reverse proxies such as Cloudflare, CloudFront, KeyCDN, Fastly, Varnish, etc. This significantly improves page load times and reduces the load on your web server, especially during periods of high traffic.
 
 ## Documentation
 
