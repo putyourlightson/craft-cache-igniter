@@ -1,0 +1,88 @@
+{% import '_includes/forms' as forms %}
+{% from 'cache-igniter/_macros' import instructions %}
+{% from 'cache-igniter/_macros' import configWarning %}
+{% from 'cache-igniter/_macros' import configFieldWarning %}
+
+{{ forms.textField({
+    label: 'Location Request Limit'|t('cache-igniter'),
+    instructions: 'The maximum number of location requests per URL. Increasing this will result in more coverage in the selected locations, but also in reaching the API limit quicker.'|t('cache-igniter'),
+    name: 'locationRequestLimit',
+    type: 'number',
+    value: warmer.locationRequestLimit,
+    errors: warmer.getErrors('locationRequestLimit'),
+    required: true,
+    min: 1,
+    max: 100,
+}) }}
+
+{% set info %}
+    <p>
+        Locations are parsed by GlobalPing’s
+        <a href="https://github.com/jsdelivr/globalping#magic-field" target="_blank">magic field</a>.
+    </p>
+    <p>
+        Recommended locations for full world coverage are:
+        <br>
+        <code>US West</code>, <code>US East</code>, <code>Brazil</code>,
+        <code>Ireland</code>, <code>Germany</code>,
+        <code>India</code>, <code>Singapore</code>, <code>Japan</code>,
+        <code>Australia</code>.
+    </p>
+{% endset %}
+{{ hiddenInput('locations', '') }}
+{{ forms.editableTableField({
+    label: 'Locations'|t('cache-igniter'),
+    instructions: instructions('The geographic locations to warm the cache from.', info),
+    name: 'locations',
+    id: 'locations',
+    cols: [{
+        type: 'singleline',
+        heading: 'Location'|t('cache-igniter'),
+        placeholder: 'US West',
+    }],
+    rows: warmer.locations,
+    allowAdd: true,
+    allowDelete: true,
+    allowReorder: true,
+    addRowLabel: 'Add a location'|t('cache-igniter'),
+}) }}
+
+{% set content %}
+    <p id="rate-limit-result"></p>
+    <button id="fetch-api-rate-limit" class="btn">
+        {{ 'Fetch API Rate Limit'|t('cache-igniter') }}
+    </button>
+    <span class="spinner small hidden"></span>
+{% endset %}
+{{ forms.field({
+    label: 'API Rate Limit'|t('cache-igniter'),
+    instructions: 'Click the button to fetch the current rate limit as determined by the GlobalPing API.'|t('cache-igniter'),
+}, content) }}
+
+{# Inline the JS so each driver can each easily include its own JS code. #}
+{% js %}
+const fetchButton = $('#{{ 'fetch-api-rate-limit'|namespaceInputId }}');
+const rateLimitResult = $('#{{ 'rate-limit-result'|namespaceInputId }}');
+fetchButton.on('click', function(event) {
+    event.preventDefault();
+
+    if (fetchButton.hasClass('disabled')) {
+        return;
+    }
+
+    fetchButton.addClass('disabled');
+    fetchButton.next('.spinner').removeClass('hidden');
+
+    Craft.sendActionRequest('GET', 'cache-igniter/warmer/get-rate-limit-description')
+        .then((response) => {
+            rateLimitResult.text(response.data.message).removeClass('error');
+        })
+        .catch((response) => {
+            rateLimitResult.text(response.response.data.message).addClass('error');
+        })
+        .finally(() => {
+            fetchButton.removeClass('disabled');
+            fetchButton.next('.spinner').addClass('hidden');
+        });
+});
+{% endjs %}

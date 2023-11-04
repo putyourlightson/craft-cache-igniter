@@ -1,0 +1,38 @@
+{% import '_includes/forms' as forms %}
+
+<p class="light">
+    {{ 'Select one or more URLs to warm.'|t('cache-igniter') }}
+</p>
+
+<form class="utility" method="post" accept-charset="UTF-8">
+    {{ actionInput('cache-igniter/warm/urls') }}
+    {{ redirectInput('utilities/cache-igniter') }}
+    {{ csrfInput() }}
+
+    {{ forms.editableTableField({
+        name: 'urls',
+        id: 'urls',
+        cols: [{
+            type: 'singleline',
+            heading: 'URLs'|t('cache-igniter'),
+            placeholder: siteUrl('page'),
+            code: true,
+        }],
+        rows: urls,
+        addRowLabel: 'Add a URL'|t('cache-igniter'),
+        minRows: 1,
+        allowAdd: true,
+        allowDelete: true,
+        allowReorder: true,
+        first: true,
+    }) }}
+
+    {{ input('submit', '', 'Warm URLs'|t('cache-igniter'), {
+        class: 'btn submit',
+    }) }}
+    {{ input('button', '', 'Clear URLs'|t('cache-igniter'), {
+        class: 'btn',
+        onclick: '$("#urls tbody tr").not(":first").remove(); $("#urls tbody tr textarea").val("");',
+    }) }}
+
+</form>

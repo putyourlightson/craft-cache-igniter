@@ -1,0 +1,143 @@
+{% extends '_layouts/cp' %}
+
+{% import '_includes/forms' as forms %}
+{% from 'cache-igniter/_macros' import instructions %}
+{% from 'cache-igniter/_macros' import configWarning %}
+{% from 'cache-igniter/_macros' import configFieldWarning %}
+
+{% do view.registerAssetBundle('putyourlightson\\cacheigniter\\assets\\CacheIgniterAsset') %}
+
+{% set crumbs = [
+    { label: 'Settings'|t('app'), url: url('settings') },
+    { label: 'Plugins'|t('app'), url: url('settings/plugins') }
+] %}
+{% set title = 'Cache Igniter' %}
+{% set tabs = {
+    'warmer': { label: 'Warming'|t('cache-igniter'), url: '#warmer' },
+    'warm-utility': { label: 'Warm Utility'|t('cache-igniter'), url: '#warm-utility' },
+    'blitz-refresh': { label: 'Blitz Refresh'|t('cache-igniter'), url: '#blitz-refresh'},
+} %}
+{% set fullPageForm = true %}
+{% set docs = 'https://putyourlightson.com/plugins/cache-igniter#' %}
+
+
+{% block actionButton %}
+
+    {{ tag('input', {
+        type: 'submit',
+        value: 'Save'|t('app'),
+        class: 'btn submit',
+    }) }}
+
+{% endblock %}
+
+
+{% block content %}
+
+    {{ actionInput('cache-igniter/settings/save') }}
+    {{ hiddenInput('pluginHandle', 'cache-igniter') }}
+
+    <div id="warmer">
+        {{ forms.selectField({
+            label: 'Warmer'|t('cache-igniter'),
+            instructions: 'The warmer to use for warming a CDN.'|t('cache-igniter'),
+            warning: (config.warmerType is defined ? configWarning('warmerType')),
+            name: 'settings[warmerType]',
+            options: warmerTypeOptions,
+            value: className(warmer),
+            toggle: true,
+            first: true,
+        }) }}
+
+        {% for warmerObject in warmers %}
+            {% set isCurrent = (className(warmer) == className(warmerObject)) %}
+            <div id="{{ className(warmer)|id }}" {{ not isCurrent ? 'class="hidden"' }}>
+                {% namespace 'warmerSettings[' ~ className(warmer) ~ ']' %}
+                    {{ (isCurrent ? warmer : warmerObject).settingsHtml|raw }}
+                {% endnamespace %}
+            </div>
+        {% endfor %}
+
+        {{ config.warmerTypeSettings is defined ? configFieldWarning('warmerTypeSettings') }}
+    </div>
+
+    <div id="warm-utility" class="hidden">
+        {{ forms.editableTableField({
+            label: 'Utility URLs'|t('cache-igniter'),
+            instructions: 'URLs that should appear in the warm utility by default.'|t('cache-igniter'),
+            name: 'settings[utilityUrls]',
+            id: 'utilityUrls',
+            cols: [{
+                type: 'singleline',
+                heading: 'URL'|t('cache-igniter'),
+                placeholder: siteUrl('page'),
+                code: true,
+            }],
+            rows: settings.utilityUrls,
+            warning: (config.utilityUrls is defined ? configWarning('utilityUrls')),
+            addRowLabel: 'Add a URL'|t('cache-igniter'),
+            allowAdd: true,
+            allowDelete: true,
+            allowReorder: true,
+        }) }}
+    </div>
+
+    <div id="blitz-refresh" class="hidden">
+        {% set info %}
+            {{ 'Delaying the warming of pages can help reduce the chances of lots of warm requests in short periods of time as content is being edited.'|t('cache-igniter') }}
+        {% endset %}
+        {{ forms.textField({
+            label: 'Refresh Delay'|t('cache-igniter'),
+            instructions: instructions('The number of seconds to wait before warming refreshed pages.', info),
+            name: 'settings[refreshDelay]',
+            type: 'number',
+            unit: 'seconds'|t('cache-igniter'),
+            value: settings.refreshDelay,
+            errors: settings.getErrors('refreshDelay'),
+            required: true,
+            min: 0,
+        }) }}
+
+        {% set info -%}
+            {{ include('cache-igniter/_includes/uri-pattern-info') }}
+        {%- endset %}
+        {% set siteColumn = [] %}
+        {% if craft.app.getIsMultiSite() %}
+            {% set allSiteOptions = [{value: '', label: 'All Sites'|t('cache-igniter')}]|merge(siteOptions) %}
+            {% set siteColumn = {
+                siteId: {
+                    type: 'select',
+                    heading: 'Site'|t('cache-igniter'),
+                    options: allSiteOptions,
+                    thin: true,
+                }
+            } %}
+        {% endif %}
+        {% set cols = siteColumn|merge({
+            uriPattern: {
+                type: 'singleline',
+                heading: 'URI Pattern'|t('cache-igniter'),
+                placeholder: 'Leave blank to match the homepage'|t('cache-igniter'),
+                code: true,
+                info: info,
+            }
+        }) %}
+        {% set info %}
+            {{ 'Only URIs that match one or more included URI patterns will be warmed.'|t('cache-igniter') }}
+        {% endset %}
+        {{ forms.editableTableField({
+            label: 'Refresh Site URI Patterns'|t('cache-igniter'),
+            instructions: instructions('URI patterns to warm whenever they are refreshed or generated by Blitz.', info),
+            warning: (config.refreshSiteUriPatterns is defined ? configWarning('refreshSiteUriPatterns')),
+            name: 'settings[refreshSiteUriPatterns]',
+            id: 'refreshSiteUriPatterns',
+            cols: cols,
+            rows: settings.refreshSiteUriPatterns,
+            addRowLabel: 'Add a URL'|t('cache-igniter'),
+            allowAdd: true,
+            allowDelete: true,
+            allowReorder: true,
+        }) }}
+    </div>
+
+{% endblock %}
