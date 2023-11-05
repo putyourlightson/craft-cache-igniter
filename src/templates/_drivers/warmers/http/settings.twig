@@ -2,7 +2,7 @@
 {% from 'cache-igniter/_macros' import instructions %}
 
 {% set info %}
-    <span class="info">{{ 'The higher the number, the faster the cache will be warmed but the more server processing will be required. A value between 1 and 5 is recommended.'|t('cache-igniter') }}</span>
+    {{ 'The higher the number, the faster the cache will be warmed but the more server processing will be required. A value between 1 and 5 is recommended.'|t('cache-igniter') }}
 {% endset %}
 {{ forms.textField({
     type: 'number',
