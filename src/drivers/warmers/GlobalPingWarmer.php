@@ -25,19 +25,16 @@ class GlobalPingWarmer extends BaseWarmer
     public const API_ENDPOINT = 'https://api.globalping.io/v1/measurements';
 
     /**
-     * The maximum number of location requests per URL.
-     */
-    public int $locationRequestLimit = 5;
-
-    /**
      * Locations to warm.
+     *
+     * @var array<int, string>|array<int, array<int, string>>
      */
     public array $locations = [
-        ['US West'],
-        ['US East'],
-        ['Brazil'],
-        ['Germany'],
-        ['Australia'],
+        'US West',
+        'US East',
+        'Brazil',
+        'Germany',
+        'Australia',
     ];
 
     private bool $_rateLimitExceeded = false;
@@ -54,25 +51,6 @@ class GlobalPingWarmer extends BaseWarmer
      * Guzzle client that can be memoized and mocked.
      */
     public ?Client $client = null;
-
-    private function _getClient(): Client
-    {
-        if ($this->client !== null) {
-            return $this->client;
-        }
-
-        // https://www.jsdelivr.com/docs/api.globalping.io#post-/v1/measurements
-        $this->client = Craft::createGuzzleClient([
-            'base_uri' => self::API_ENDPOINT,
-            'headers' => [
-                'Accept-Encoding' => 'br',
-                'Content-Type' => 'application/json',
-                'User-Agent' => 'CacheIgniter/1 (https://putyourlightson.com/plugins/cache-igniter)',
-            ],
-        ]);
-
-        return $this->client;
-    }
 
     /**
      * @inheritdoc
@@ -96,7 +74,7 @@ class GlobalPingWarmer extends BaseWarmer
 
         $rateLimit = $this->_getRateLimitFromResponse($response);
 
-        if ($rateLimit['remaining'] < $this->locationRequestLimit) {
+        if ($rateLimit['remaining'] < count($this->locations)) {
             $this->_rateLimitExceeded = true;
         }
 
@@ -111,7 +89,10 @@ class GlobalPingWarmer extends BaseWarmer
         // Hard-code a live URL so the API doesn’t respond with an error.
         $url = 'https://putyourlightson.com/';
 
-        $response = $this->_sendRequest($url, 1);
+        // Limit location to the first one.
+        $location = $this->locations[0] ?? 'US';
+
+        $response = $this->_sendRequest($url, [$location]);
         if ($response === null) {
             return null;
         }
@@ -136,20 +117,46 @@ class GlobalPingWarmer extends BaseWarmer
     /**
      * @inheritdoc
      */
-    protected function defineRules(): array
+    public function getSettings(): array
     {
-        return [
-            [['locationRequestLimit'], 'integer', 'min' => 0, 'max' => 100],
-        ];
+        $settings = parent::getSettings();
+
+        // Convert locations to a nested array for the editable table field.
+        foreach ($settings['locations'] as &$location) {
+            if (is_string($location)) {
+                $location = [$location];
+            }
+        }
+
+        return $settings;
     }
 
-    private function _sendRequest(string $url, ?int $locationRequestLimit = null): ?Response
+    private function _getClient(): Client
+    {
+        if ($this->client !== null) {
+            return $this->client;
+        }
+
+        // https://www.jsdelivr.com/docs/api.globalping.io#post-/v1/measurements
+        $this->client = Craft::createGuzzleClient([
+            'base_uri' => self::API_ENDPOINT,
+            'headers' => [
+                'Accept-Encoding' => 'br',
+                'Content-Type' => 'application/json',
+                'User-Agent' => 'CacheIgniter/1 (https://putyourlightson.com/plugins/cache-igniter)',
+            ],
+        ]);
+
+        return $this->client;
+    }
+
+    private function _sendRequest(string $url, array $locations = []): ?Response
     {
         $client = $this->_getClient();
 
         try {
             /** @var Response $response */
-            $response = $client->post('', $this->_getRequestBody($url, $locationRequestLimit));
+            $response = $client->post('', $this->_getRequestBody($url, $locations));
         } catch (RequestException $exception) {
             CacheIgniter::$plugin->log($exception->getMessage(), [], Logger::LEVEL_ERROR);
 
@@ -159,10 +166,13 @@ class GlobalPingWarmer extends BaseWarmer
         return $response;
     }
 
-    private function _getRequestBody(string $url, ?int $locationRequestLimit = null): array
+    private function _getRequestBody(string $url, array $locations = []): array
     {
-        $locations = [];
-        foreach ($this->locations as $key => $location) {
+        if (empty($locations)) {
+            $locations = $this->locations;
+        }
+
+        foreach ($locations as $key => $location) {
             $location = is_array($location) ? ($location[0] ?? null) : $location;
             if (!empty($location)) {
                 $locations[$key] = [
@@ -186,7 +196,7 @@ class GlobalPingWarmer extends BaseWarmer
                         'path' => $path,
                     ],
                 ],
-                'limit' => $locationRequestLimit ?? $this->locationRequestLimit,
+                'limit' => count($locations),
                 'locations' => $locations,
             ]),
         ];

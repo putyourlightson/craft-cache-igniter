@@ -24,13 +24,12 @@ return [
 
         // The warmer settings.
         //'warmerSettings' => [
-        //    'locationRequestLimit' => 5,
         //    'locations' => [
-        //        ['US West'],
-        //        ['US East'],
-        //        ['Brazil'],
-        //        ['Germany'],
-        //        ['Australia'],
+        //        'US West',
+        //        'US East',
+        //        'Brazil',
+        //        'Germany',
+        //        'Australia',
         //    ],
         //],
 

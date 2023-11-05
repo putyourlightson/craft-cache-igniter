@@ -53,6 +53,7 @@ class SettingsController extends Controller
 
         return $this->renderTemplate('cache-igniter/_settings', [
             'settings' => $settings,
+            'config' => Craft::$app->getConfig()->getConfigFromFile('cache-igniter'),
             'siteOptions' => $siteOptions,
             'warmer' => $warmer,
             'warmerDrivers' => $warmerDrivers,

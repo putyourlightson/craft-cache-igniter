@@ -81,7 +81,7 @@ class WarmerHelper
     {
         // Create a new object rather than using `Component::createComponent`, which can throw an exception if provided settings do not exist on the class.
         $warmer = new $type();
-        $warmer->setAttributes($settings);
+        $warmer->setAttributes($settings, false);
 
         return $warmer;
     }

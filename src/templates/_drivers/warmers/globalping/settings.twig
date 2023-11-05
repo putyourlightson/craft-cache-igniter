@@ -1,18 +1,6 @@
 {% import '_includes/forms' as forms %}
 {% from 'cache-igniter/_macros' import instructions %}
 
-{{ forms.textField({
-    label: 'Location Request Limit'|t('cache-igniter'),
-    instructions: 'The maximum number of location requests per URL. Increasing this will result in more coverage in the selected locations, but also in reaching the API limit quicker.'|t('cache-igniter'),
-    name: 'locationRequestLimit',
-    type: 'number',
-    value: warmer.locationRequestLimit,
-    errors: warmer.getErrors('locationRequestLimit'),
-    required: true,
-    min: 1,
-    max: 100,
-}) }}
-
 {% set info %}
     <p>
         Locations are parsed by GlobalPing’s
@@ -38,7 +26,7 @@
         heading: 'Location'|t('cache-igniter'),
         placeholder: 'US West',
     }],
-    rows: warmer.locations,
+    rows: warmer.settings.locations,
     minRows: 1,
     allowAdd: true,
     allowDelete: true,
