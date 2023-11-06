@@ -5,7 +5,13 @@
 
 # Cache Igniter Plugin for Craft CMS
 
-Cache Igniter helps ensure that your site's cache remains warm on global CDNs and reverse proxies such as Cloudflare, CloudFront, KeyCDN, Fastly, Varnish, etc. This significantly improves page load times and reduces the load on your web server, especially during periods of high traffic.
+Cache Igniter is a global CDN and reverse proxy cache warmer.
+
+- Keeps your site’s cache warm around the globe and around the clock.
+- Improves page load times and reduces load on your web server.
+- May or may not reduce global warming!
+
+![Time to first byte in Europe with Cloudflare enabled](https://putyourlightson.com/assets/images/plugins/cache-igniter/ttfb-europe-cloudflare-warmed.png)
 
 ## Documentation
 
