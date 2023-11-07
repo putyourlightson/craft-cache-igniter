@@ -87,6 +87,18 @@
     </div>
 
     <div id="blitz-refresh" class="hidden">
+        {% if not craft.app.plugins.isPluginInstalled('blitz') %}
+            <div class="field">
+                <p class="warning has-icon">
+                    <span class="icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Warning: </span>
+                    <span>
+                        {{ 'These settings have no effect when Blitz is not installed.'|t('cache-igniter') }}
+                    </span>
+                </p>
+            </div>
+        {% endif %}
+
         {% set info %}
             {{ 'Delaying the warming of pages can help reduce the chances of lots of warm requests in short periods of time as content is being edited.'|t('cache-igniter') }}
         {% endset %}
