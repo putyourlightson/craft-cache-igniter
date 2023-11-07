@@ -11,7 +11,7 @@ Cache Igniter is a global CDN and reverse proxy cache warmer.
 - Improves page load times and reduces load on your web server.
 - May or may not reduce global warming!
 
-![Page load times with a warmed Cloudflare cache around the globe](https://putyourlightson.com/assets/images/plugins/cache-igniter/ttfb-europe-cloudflare-warmed-full.png)
+![Page load times with a warmed Cloudflare cache around the globe](https://putyourlightson.com/assets/images/plugins/cache-igniter/ttfb-map-warmed-full.png)
 
 ## Documentation
 
