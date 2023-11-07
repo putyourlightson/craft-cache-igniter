@@ -18,10 +18,9 @@ class RefreshService extends Component
     public function refreshSiteUris(array $siteUris): void
     {
         $urls = [];
-        $siteUriPatterns = CacheIgniter::$plugin->settings->refreshSiteUriPatterns;
 
         foreach ($siteUris as $siteUri) {
-            if ($this->_matchesUriPatterns($siteUri, $siteUriPatterns)) {
+            if ($this->_getIsWarmableSiteUri($siteUri)) {
                 $urls[] = $siteUri->getUrl();
             }
         }
@@ -29,6 +28,19 @@ class RefreshService extends Component
         if (!empty($urls)) {
             CacheIgniter::$plugin->warm->warmUrls($urls, null, false);
         }
+    }
+
+    /**
+     * Returns whether the site URI is warmable.
+     */
+    private function _getIsWarmableSiteUri(SiteUriModel $siteUri): bool
+    {
+        // Excluded URI patterns take priority
+        if ($this->_matchesUriPatterns($siteUri, CacheIgniter::$plugin->settings->excludedRefreshUriPatterns)) {
+            return false;
+        }
+
+        return $this->_matchesUriPatterns($siteUri, CacheIgniter::$plugin->settings->includedRefreshUriPatterns);
     }
 
     /**

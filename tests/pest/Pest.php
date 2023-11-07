@@ -38,6 +38,15 @@ expect()->extend('toHaveOneRecordAndQueueJob', function() {
     return $this;
 });
 
+expect()->extend('toHaveNoRecordNorQueueJob', function() {
+    expect(UrlRecord::find()->count())
+        ->toEqual(0)
+        ->and(Craft::$app->queue->getJobInfo())
+        ->toHaveCount(0);
+
+    return $this;
+});
+
 /*
 |--------------------------------------------------------------------------
 | Constants

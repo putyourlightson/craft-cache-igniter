@@ -17,7 +17,8 @@ _Tests warming URLs._
 
 _Tests refreshing site URIs._
 
-![Pass](https://raw.githubusercontent.com/putyourlightson/craft-generate-test-spec/main/icons/pass.svg) Refreshing a site URI with a matching a refresh site URI pattern creates a record and a queue job.  
+![Pass](https://raw.githubusercontent.com/putyourlightson/craft-generate-test-spec/main/icons/pass.svg) Refreshing a site URI with a matching included refresh URI pattern creates a record and a queue job.  
+![Pass](https://raw.githubusercontent.com/putyourlightson/craft-generate-test-spec/main/icons/pass.svg) Refreshing a site URI with a matching excluded refresh URI pattern does not create a record nor a queue job.  
 
 ### [Warm](pest/Feature/WarmTest.php)
 

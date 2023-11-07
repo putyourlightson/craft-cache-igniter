@@ -12,10 +12,16 @@ use putyourlightson\cacheigniter\records\UrlRecord;
 
 beforeEach(function() {
     CacheIgniter::$plugin->set('warmer', new GlobalPingWarmer());
-    CacheIgniter::$plugin->settings->refreshSiteUriPatterns = [
+    CacheIgniter::$plugin->settings->includedRefreshUriPatterns = [
         [
             'siteId' => 1,
             'uriPattern' => 'test',
+        ],
+    ];
+    CacheIgniter::$plugin->settings->excludedRefreshUriPatterns = [
+        [
+            'siteId' => 1,
+            'uriPattern' => 'dynamic',
         ],
     ];
 });
@@ -25,7 +31,7 @@ afterEach(function() {
     Craft::$app->queue->releaseAll();
 });
 
-test('Refreshing a site URI with a matching a refresh site URI pattern creates a record and a queue job', function() {
+test('Refreshing a site URI with a matching included refresh URI pattern creates a record and a queue job', function() {
     $uri = 'test';
     CacheIgniter::$plugin->refresh->refreshSiteUris([
         new SiteUriModel([
@@ -40,4 +46,17 @@ test('Refreshing a site URI with a matching a refresh site URI pattern creates a
 
     expect(UrlHelper::url($uri))
         ->toHaveOneRecordAndQueueJob();
+});
+
+test('Refreshing a site URI with a matching excluded refresh URI pattern does not create a record nor a queue job', function() {
+    $uri = 'test';
+    CacheIgniter::$plugin->refresh->refreshSiteUris([
+        new SiteUriModel([
+            'siteId' => 1,
+            'uri' => 'test-dynamic',
+        ]),
+    ]);
+
+    expect(UrlHelper::url($uri))
+        ->toHaveNoRecordNorQueueJob();
 });
