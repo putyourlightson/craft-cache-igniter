@@ -57,7 +57,7 @@ abstract class BaseWarmer extends SavableComponent implements WarmerInterface
      */
     public function getRateLimitDescription(): ?string
     {
-        return null;
+        return '';
     }
 
     /**

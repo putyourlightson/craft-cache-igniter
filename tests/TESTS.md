@@ -24,3 +24,14 @@ _Tests refreshing site URIs._
 _Tests warming URLs._
 
 ![Pass](https://raw.githubusercontent.com/putyourlightson/craft-generate-test-spec/main/icons/pass.svg) Warming URLs without a progress handler creates a record and a queue job.  
+
+### [Warmer](pest/Feature/WarmerTest.php)
+
+_Tests warming URLs with each of the warmer drivers._
+
+![Pass](https://raw.githubusercontent.com/putyourlightson/craft-generate-test-spec/main/icons/pass.svg) Warming a URL results in a positive response from the API with data set "GlobalPingWarmer".  
+![Pass](https://raw.githubusercontent.com/putyourlightson/craft-generate-test-spec/main/icons/pass.svg) Warming a URL results in a positive response from the API with data set "HttpWarmer".  
+![Pass](https://raw.githubusercontent.com/putyourlightson/craft-generate-test-spec/main/icons/pass.svg) Warming a URL results in a positive response from the API with data set "DummyWarmer".  
+![Pass](https://raw.githubusercontent.com/putyourlightson/craft-generate-test-spec/main/icons/pass.svg) Fetching the rate limit from the API returns a valid result with data set "GlobalPingWarmer".  
+![Pass](https://raw.githubusercontent.com/putyourlightson/craft-generate-test-spec/main/icons/pass.svg) Fetching the rate limit from the API returns a valid result with data set "HttpWarmer".  
+![Pass](https://raw.githubusercontent.com/putyourlightson/craft-generate-test-spec/main/icons/pass.svg) Fetching the rate limit from the API returns a valid result with data set "DummyWarmer".  
