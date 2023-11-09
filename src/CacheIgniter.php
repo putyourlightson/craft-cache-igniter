@@ -16,7 +16,6 @@ use craft\web\UrlManager;
 use Monolog\Formatter\LineFormatter;
 use Psr\Log\LogLevel;
 use putyourlightson\blitz\events\RefreshCacheEvent;
-use putyourlightson\blitz\events\RefreshSiteCacheEvent;
 use putyourlightson\blitz\services\RefreshCacheService;
 use putyourlightson\cacheigniter\drivers\warmers\BaseWarmer;
 use putyourlightson\cacheigniter\helpers\WarmerHelper;
@@ -145,7 +144,7 @@ class CacheIgniter extends Plugin
         );
 
         Event::on(RefreshCacheService::class, RefreshCacheService::EVENT_AFTER_REFRESH_ALL_CACHE,
-            function(RefreshSiteCacheEvent $event) {
+            function(RefreshCacheEvent $event) {
                 $this->refresh->refreshSiteUris($event->siteUris);
             }
         );
