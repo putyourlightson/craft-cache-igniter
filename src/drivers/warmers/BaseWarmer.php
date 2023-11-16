@@ -77,7 +77,7 @@ abstract class BaseWarmer extends SavableComponent implements WarmerInterface
             return;
         }
 
-        $label = Craft::t('cache-igniter', 'Warming {count} of {total} URLs.', [
+        $label = Craft::t('cache-igniter', 'Warming {count} of {total} URLs', [
             'count' => $count,
             'total' => $total,
         ]);

@@ -24,7 +24,9 @@ use putyourlightson\cacheigniter\services\RefreshService;
 use putyourlightson\cacheigniter\services\WarmService;
 use putyourlightson\cacheigniter\utilities\WarmUtility;
 use yii\base\Event;
+use yii\di\Instance;
 use yii\log\Logger;
+use yii\queue\Queue;
 
 /**
  * @property-read RefreshService $refresh
@@ -60,6 +62,13 @@ class CacheIgniter extends Plugin
     public string $schemaVersion = '1.0.0';
 
     /**
+     * The queue to use for running jobs.
+     *
+     * @since 1.1.0
+     */
+    public Queue|array|string $queue = 'queue';
+
+    /**
      * @inheritdoc
      */
     public function init(): void
@@ -68,6 +77,7 @@ class CacheIgniter extends Plugin
         self::$plugin = $this;
 
         $this->_registerComponents();
+        $this->_registerInstances();
         $this->_registerLogTarget();
         $this->_registerRefreshEvents();
 
@@ -109,6 +119,14 @@ class CacheIgniter extends Plugin
                 $this->settings->warmerSettings,
             ));
         }
+    }
+
+    /**
+     * Registers instances configured via `config/app.php`, ensuring they are of the correct type.
+     */
+    private function _registerInstances(): void
+    {
+        $this->queue = Instance::ensure($this->queue, Queue::class);
     }
 
     /**

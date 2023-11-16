@@ -78,9 +78,10 @@ class WarmService extends Component
         }
 
         Queue::push(
-            new WarmJob(),
-            CacheIgniter::$plugin->settings->warmJobPriority,
-            $refreshDelay,
+            job: new WarmJob(),
+            priority: CacheIgniter::$plugin->settings->warmJobPriority,
+            delay: $refreshDelay,
+            queue: CacheIgniter::$plugin->queue,
         );
     }
 }
