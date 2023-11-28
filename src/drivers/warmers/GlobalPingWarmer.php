@@ -145,6 +145,7 @@ class GlobalPingWarmer extends BaseWarmer
                 'Content-Type' => 'application/json',
                 'User-Agent' => 'CacheIgniter/1 (https://putyourlightson.com/plugins/cache-igniter)',
             ],
+            'connect_timeout' => 10,
         ]);
 
         return $this->client;

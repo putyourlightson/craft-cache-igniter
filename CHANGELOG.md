@@ -5,6 +5,7 @@
 ### Changed
 
 - All site URIs are now fetched on the `EVENT_AFTER_REFRESH_ALL_CACHE` event if not generating on refresh.
+- Set the Guzzle client connection timeout to 10 seconds.
 
 ## 1.1.0 - 2023-11-17
 

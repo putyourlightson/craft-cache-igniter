@@ -14,7 +14,8 @@ use putyourlightson\cacheigniter\records\UrlRecord;
 |
 */
 
-uses(TestCase::class)->in('./');
+uses(TestCase::class)
+    ->in('./');
 
 /*
 |--------------------------------------------------------------------------
