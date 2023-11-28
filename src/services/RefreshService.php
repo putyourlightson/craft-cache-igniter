@@ -6,12 +6,30 @@
 namespace putyourlightson\cacheigniter\services;
 
 use craft\base\Component;
+use putyourlightson\blitz\Blitz;
+use putyourlightson\blitz\helpers\SiteUriHelper;
 use putyourlightson\blitz\models\SiteUriModel;
 use putyourlightson\blitz\services\CacheRequestService;
 use putyourlightson\cacheigniter\CacheIgniter;
 
 class RefreshService extends Component
 {
+    /**
+     * @param SiteUriModel[] $siteUris
+     */
+    public function refreshAll(array $siteUris): void
+    {
+        // Fetch the site URIs if not generating on refresh.
+        if (!Blitz::$plugin->settings->generateOnRefresh()) {
+            $siteUris = array_merge(
+                SiteUriHelper::getAllSiteUris(),
+                Blitz::$plugin->settings->getCustomSiteUris(),
+            );
+        }
+
+        $this->refreshSiteUris($siteUris);
+    }
+
     /**
      * @param SiteUriModel[] $siteUris
      */

@@ -163,7 +163,7 @@ class CacheIgniter extends Plugin
 
         Event::on(RefreshCacheService::class, RefreshCacheService::EVENT_AFTER_REFRESH_ALL_CACHE,
             function(RefreshCacheEvent $event) {
-                $this->refresh->refreshSiteUris($event->siteUris);
+                $this->refresh->refreshAll($event->siteUris);
             }
         );
     }
