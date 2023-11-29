@@ -6,6 +6,7 @@
 namespace putyourlightson\cacheigniter\migrations;
 
 use craft\db\Migration;
+use putyourlightson\cacheigniter\CacheIgniter;
 use putyourlightson\cacheigniter\records\UrlRecord;
 
 class Install extends Migration
@@ -34,7 +35,7 @@ class Install extends Migration
     {
         if (!$this->db->tableExists(UrlRecord::tableName())) {
             $this->createTable(UrlRecord::tableName(), [
-                'url' => $this->string(1000)->notNull(),
+                'url' => $this->string(CacheIgniter::$plugin->settings->maxUrlLength)->notNull(),
                 'warmDate' => $this->dateTime(),
                 'PRIMARY KEY([[url]])',
             ]);

@@ -62,19 +62,20 @@ class WarmService extends Component
         $warmDate = DateTimeHelper::toDateTime(strtotime('+' . $refreshDelay . ' seconds'));
 
         foreach ($urls as $url) {
-            // Overwrites the warm date if the URL already exists.
-            Craft::$app->getDb()->createCommand()
-                ->upsert(
-                    UrlRecord::tableName(),
-                    [
-                        'url' => $url,
-                        'warmDate' => Db::prepareDateForDb($warmDate),
-                    ],
-                    true,
-                    [],
-                    false
-                )
-                ->execute();
+            if (strlen($url) <= CacheIgniter::$plugin->settings->maxUrlLength) {
+                Craft::$app->getDb()->createCommand()
+                    ->upsert(
+                        UrlRecord::tableName(),
+                        [
+                            'url' => $url,
+                            'warmDate' => Db::prepareDateForDb($warmDate),
+                        ],
+                        true,
+                        [],
+                        false
+                    )
+                    ->execute();
+            }
         }
 
         Queue::push(

@@ -1,5 +1,11 @@
 # Release Notes for Cache Igniter
 
+## 1.1.2 - 2023-11-29
+
+### Changed
+
+- The default URL column size is now set to `500` by default to accommodate `utf8mb4` character sets, and configurable using the `maxUrlLength` config setting ([#1](https://github.com/putyourlightson/craft-cache-igniter/issues/1)).
+
 ## 1.1.1 - 2023-11-28
 
 ### Changed
