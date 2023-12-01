@@ -37,7 +37,9 @@ return [
         //'warmerTypes' => [],
 
         // URLs that should appear in the utility by default.
-        //'utilityUrls' => [],
+        //'utilityUrls' => [
+        //    ['https://www.domain.com/page'],
+        //],
 
         //The number of seconds to wait before warming refreshed site URIs.
         //'refreshDelay' => 30,
