@@ -31,11 +31,11 @@ composer require markhuot/craft-pest-core:^2.0.0-rc2 --dev
 Then run the following command from the root of your project.
 
 ```shell
-php craft pest/test --test-directory=vendor/putyourlightson/craft-cache-igniter/tests/pest
+php php vendor/bin/pest --test-directory=vendor/putyourlightson/craft-cache-igniter/tests/pest
 ```
 
 Or to run a specific test.
 
 ```shell
-php craft pest/test --test-directory=vendor/putyourlightson/craft-cache-igniter/tests/pest --filter=CacheRequestTest
+php php vendor/bin/pest --test-directory=vendor/putyourlightson/craft-cache-igniter/tests/pest --filter=CacheRequestTest
 ```
