@@ -1,7 +1,7 @@
 {
   "name": "putyourlightson/craft-cache-igniter",
   "description": "A global CDN and reverse proxy cache warmer.",
-  "version": "1.1.2",
+  "version": "2.0.0-beta.1",
   "type": "craft-plugin",
   "homepage": "https://putyourlightson.com/plugins/cache-igniter",
   "license": "proprietary",
@@ -14,27 +14,37 @@
     "blitz"
   ],
   "require": {
-    "php": "^8.0.2",
+    "php": "^8.2",
     "amphp/http-client": "^4.0",
     "amphp/parallel": "^1.0",
-    "craftcms/cms": "^4.0"
+    "craftcms/cms": "^5.0.0-beta.1"
   },
   "require-dev": {
     "craftcms/ecs": "dev-main",
     "craftcms/phpstan": "dev-main",
-    "markhuot/craft-pest-core": "^2.0.0-rc2",
+    "markhuot/craft-pest-core": "v3.x-dev",
     "mockery/mockery": "^1.0",
     "putyourlightson/craft-generate-test-spec": "v2.x-dev"
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/bencroker/craft-pest-core"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "putyourlightson\\cacheigniter\\": "src/"
     }
   },
-  "autoload-dev": {
-    "psr-4": {
-      "putyourlightson\\cacheignitertests\\": "tests/"
-    }
+  "config": {
+    "allow-plugins": {
+      "craftcms/plugin-installer": true,
+      "pestphp/pest-plugin": true,
+      "yiisoft/yii2-composer": true
+    },
+    "optimize-autoloader": true,
+    "sort-packages": true
   },
   "support": {
     "docs": "https://putyourlightson.com/plugins/cache-igniter",
@@ -47,7 +57,7 @@
     "developer": "PutYourLightsOn",
     "developerUrl": "https://putyourlightson.com/",
     "documentationUrl": "https://putyourlightson.com/plugins/cache-igniter",
-    "changelogUrl": "https://raw.githubusercontent.com/putyourlightson/craft-cache-igniter/v1/CHANGELOG.md",
+    "changelogUrl": "https://raw.githubusercontent.com/putyourlightson/craft-cache-igniter/v2/CHANGELOG.md",
     "class": "putyourlightson\\cacheigniter\\CacheIgniter"
   }
 }
