@@ -15,8 +15,8 @@
   ],
   "require": {
     "php": "^8.2",
-    "amphp/http-client": "^4.0",
-    "amphp/parallel": "^1.0",
+    "amphp/http-client": "^5.0",
+    "amphp/parallel": "^2.0",
     "craftcms/cms": "^5.0.0-beta.1"
   },
   "require-dev": {
@@ -33,15 +33,15 @@
       "url": "https://github.com/bencroker/craft-pest-core"
     }
   ],
-  "scripts": {
-    "phpstan": "phpstan --ansi --memory-limit=1G",
-    "check-cs": "ecs check --ansi",
-    "fix-cs": "ecs check --fix --ansi"
-  },
   "autoload": {
     "psr-4": {
       "putyourlightson\\cacheigniter\\": "src/"
     }
+  },
+  "scripts": {
+    "phpstan": "phpstan --ansi --memory-limit=1G",
+    "check-cs": "ecs check --ansi",
+    "fix-cs": "ecs check --fix --ansi"
   },
   "config": {
     "allow-plugins": {
