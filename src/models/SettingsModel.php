@@ -64,9 +64,14 @@ class SettingsModel extends Model
     public array $excludedRefreshUriPatterns = [];
 
     /**
+     * The batch size to use for warm jobs.
+     */
+    public int $warmJobBatchSize = 100;
+
+    /**
      * The priority to give the warm job (the lower the number, the higher the priority).
      */
-    public int $warmJobPriority = 101;
+    public int $warmJobPriority = 110;
 
     /**
      * The maximum length of URLs that may be warmed. Increasing this value requires manually updating the limit in the `url` column of the `cacheigniter_urls` database table. Note that the prefix length limit is 3072 bytes for InnoDB tables that use the DYNAMIC or COMPRESSED row format. Assuming a `utf8mb4` character set and a maximum of 4 bytes for each character, this is 768 characters.

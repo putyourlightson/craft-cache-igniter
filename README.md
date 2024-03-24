@@ -15,7 +15,7 @@ Cache Igniter is a global CDN and reverse proxy cache warmer.
 
 ## Documentation
 
-Learn more and read the documentation at [putyourlightson.com/plugins/cache-igniter →](https://putyourlightson.com/plugins/cache-igniter)
+Learn more and read the documentation at [putyourlightson.com/plugins/cache-igniter »](https://putyourlightson.com/plugins/cache-igniter)
 
 ## License
 

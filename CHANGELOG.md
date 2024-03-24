@@ -1,5 +1,12 @@
 # Release Notes for Cache Igniter
 
+## 1.2.0 - Unreleased
+
+### Added
+
+- Added batched warm jobs.
+- Added a new `warmJobBatchSize` config setting that sets the batch size to use for warm jobs.
+
 ## 1.1.2 - 2023-11-29
 
 ### Changed
