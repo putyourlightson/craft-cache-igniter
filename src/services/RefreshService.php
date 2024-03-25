@@ -20,7 +20,7 @@ class RefreshService extends Component
     public function refreshAll(array $siteUris): void
     {
         // Fetch the site URIs if not generating on refresh.
-        if (!Blitz::$plugin->settings->generateOnRefresh()) {
+        if (!Blitz::$plugin->settings->shouldGenerateOnRefresh()) {
             $siteUris = array_merge(
                 SiteUriHelper::getAllSiteUris(),
                 Blitz::$plugin->settings->getCustomSiteUris(),
