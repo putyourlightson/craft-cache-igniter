@@ -38,7 +38,7 @@ class RefreshService extends Component
         $urls = [];
 
         foreach ($siteUris as $siteUri) {
-            if ($this->_getIsWarmableSiteUri($siteUri)) {
+            if ($this->getIsWarmableSiteUri($siteUri)) {
                 $urls[] = $siteUri->getUrl();
             }
         }
@@ -51,14 +51,14 @@ class RefreshService extends Component
     /**
      * Returns whether the site URI is warmable.
      */
-    private function _getIsWarmableSiteUri(SiteUriModel $siteUri): bool
+    private function getIsWarmableSiteUri(SiteUriModel $siteUri): bool
     {
         // Excluded URI patterns take priority
-        if ($this->_matchesUriPatterns($siteUri, CacheIgniter::$plugin->settings->excludedRefreshUriPatterns)) {
+        if ($this->matchesUriPatterns($siteUri, CacheIgniter::$plugin->settings->excludedRefreshUriPatterns)) {
             return false;
         }
 
-        return $this->_matchesUriPatterns($siteUri, CacheIgniter::$plugin->settings->includedRefreshUriPatterns);
+        return $this->matchesUriPatterns($siteUri, CacheIgniter::$plugin->settings->includedRefreshUriPatterns);
     }
 
     /**
@@ -66,7 +66,7 @@ class RefreshService extends Component
      *
      * @see CacheRequestService::matchesUriPatterns()
      */
-    private function _matchesUriPatterns(SiteUriModel $siteUri, array $siteUriPatterns): bool
+    private function matchesUriPatterns(SiteUriModel $siteUri, array $siteUriPatterns): bool
     {
         foreach ($siteUriPatterns as $siteUriPattern) {
             if (empty($siteUriPattern['siteId']) || $siteUriPattern['siteId'] == $siteUri->siteId) {

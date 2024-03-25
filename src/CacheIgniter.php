@@ -76,14 +76,14 @@ class CacheIgniter extends Plugin
         parent::init();
         self::$plugin = $this;
 
-        $this->_registerComponents();
-        $this->_registerInstances();
-        $this->_registerLogTarget();
-        $this->_registerRefreshEvents();
+        $this->registerComponents();
+        $this->registerInstances();
+        $this->registerLogTarget();
+        $this->registerRefreshEvents();
 
         if (Craft::$app->getRequest()->getIsCpRequest()) {
-            $this->_registerCpUrlRules();
-            $this->_registerUtilities();
+            $this->registerCpUrlRules();
+            $this->registerUtilities();
         }
     }
 
@@ -111,7 +111,7 @@ class CacheIgniter extends Plugin
      *
      * @see Plugins::$pluginConfigs
      */
-    private function _registerComponents(): void
+    private function registerComponents(): void
     {
         if (!$this->has('warmer')) {
             $this->set('warmer', WarmerHelper::createWarmer(
@@ -124,7 +124,7 @@ class CacheIgniter extends Plugin
     /**
      * Registers instances configured via `config/app.php`, ensuring they are of the correct type.
      */
-    private function _registerInstances(): void
+    private function registerInstances(): void
     {
         $this->queue = Instance::ensure($this->queue, Queue::class);
     }
@@ -134,7 +134,7 @@ class CacheIgniter extends Plugin
      *
      * @see LineFormatter::SIMPLE_FORMAT
      */
-    private function _registerLogTarget(): void
+    private function registerLogTarget(): void
     {
         Craft::getLogger()->dispatcher->targets[] = new MonologTarget([
             'name' => 'cache-igniter',
@@ -149,7 +149,7 @@ class CacheIgniter extends Plugin
         ]);
     }
 
-    private function _registerRefreshEvents(): void
+    private function registerRefreshEvents(): void
     {
         if (Craft::$app->plugins->getPlugin('blitz') === null) {
             return;
@@ -168,7 +168,7 @@ class CacheIgniter extends Plugin
         );
     }
 
-    private function _registerCpUrlRules(): void
+    private function registerCpUrlRules(): void
     {
         Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES,
             function(RegisterUrlRulesEvent $event) {
@@ -182,7 +182,7 @@ class CacheIgniter extends Plugin
         );
     }
 
-    private function _registerUtilities(): void
+    private function registerUtilities(): void
     {
         Event::on(Utilities::class, Utilities::EVENT_REGISTER_UTILITIES,
             function(RegisterComponentTypesEvent $event) {

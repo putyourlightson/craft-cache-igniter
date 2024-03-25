@@ -74,7 +74,7 @@ class HttpWarmer extends BaseWarmer
 
             if (UrlHelper::isAbsoluteUrl($url) !== false) {
                 try {
-                    $request = $this->_createRequest($url);
+                    $request = $this->createRequest($url);
                     $client->request($request);
 
                     if (is_callable($setProgressHandler)) {
@@ -108,7 +108,7 @@ class HttpWarmer extends BaseWarmer
         ];
     }
 
-    private function _createRequest(string $url): Request
+    private function createRequest(string $url): Request
     {
         $request = new Request($url);
 

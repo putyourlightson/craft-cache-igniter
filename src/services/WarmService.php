@@ -47,7 +47,7 @@ class WarmService extends Component
         if ($setProgressHandler !== null) {
             CacheIgniter::$plugin->warmer->warmUrlsWithProgress($urls, $setProgressHandler);
         } else {
-            $this->_prepareUrlsForWarming($urls, $immediate);
+            $this->prepareUrlsForWarming($urls, $immediate);
         }
     }
 
@@ -56,7 +56,7 @@ class WarmService extends Component
      *
      * @param string[] $urls
      */
-    private function _prepareUrlsForWarming(array $urls, bool $immediate): void
+    private function prepareUrlsForWarming(array $urls, bool $immediate): void
     {
         $refreshDelay = $immediate ? 0 : CacheIgniter::$plugin->settings->refreshDelay;
         $warmDate = DateTimeHelper::toDateTime(strtotime('+' . $refreshDelay . ' seconds'));
