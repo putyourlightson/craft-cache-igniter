@@ -37,7 +37,7 @@ class GlobalPingWarmer extends BaseWarmer
         'Australia',
     ];
 
-    private bool $_rateLimitExceeded = false;
+    private bool $rateLimitExceeded = false;
 
     /**
      * @inheritdoc
@@ -61,21 +61,21 @@ class GlobalPingWarmer extends BaseWarmer
             return false;
         }
 
-        if ($this->_rateLimitExceeded === true) {
+        if ($this->rateLimitExceeded === true) {
             CacheIgniter::$plugin->log('Unable to warm URL `{url}`. GlobalPing API rate limit has been exceeded.', ['url' => $url], Logger::LEVEL_ERROR);
 
             return false;
         }
 
-        $response = $this->_sendRequest($url);
+        $response = $this->sendRequest($url);
         if ($response === null) {
             return false;
         }
 
-        $rateLimit = $this->_getRateLimitFromResponse($response);
+        $rateLimit = $this->getRateLimitFromResponse($response);
 
         if ($rateLimit['remaining'] < count($this->locations)) {
-            $this->_rateLimitExceeded = true;
+            $this->rateLimitExceeded = true;
         }
 
         return true;
@@ -92,12 +92,12 @@ class GlobalPingWarmer extends BaseWarmer
         // Limit location to the first one.
         $location = $this->locations[0] ?? 'US';
 
-        $response = $this->_sendRequest($url, [$location]);
+        $response = $this->sendRequest($url, [$location]);
         if ($response === null) {
             return null;
         }
 
-        $rateLimit = $this->_getRateLimitFromResponse($response);
+        $rateLimit = $this->getRateLimitFromResponse($response);
         $rateLimit['minutes'] = floor($rateLimit['reset'] / 60);
         $rateLimit['seconds'] = $rateLimit['reset'] % 60;
 
@@ -131,7 +131,7 @@ class GlobalPingWarmer extends BaseWarmer
         return $settings;
     }
 
-    private function _getClient(): Client
+    private function getClient(): Client
     {
         if ($this->client !== null) {
             return $this->client;
@@ -151,13 +151,13 @@ class GlobalPingWarmer extends BaseWarmer
         return $this->client;
     }
 
-    private function _sendRequest(string $url, array $locations = []): ?Response
+    private function sendRequest(string $url, array $locations = []): ?Response
     {
-        $client = $this->_getClient();
+        $client = $this->getClient();
 
         try {
             /** @var Response $response */
-            $response = $client->post('', $this->_getRequestBody($url, $locations));
+            $response = $client->post('', $this->getRequestBody($url, $locations));
         } catch (RequestException $exception) {
             CacheIgniter::$plugin->log($exception->getMessage(), [], Logger::LEVEL_ERROR);
 
@@ -167,7 +167,7 @@ class GlobalPingWarmer extends BaseWarmer
         return $response;
     }
 
-    private function _getRequestBody(string $url, array $locations = []): array
+    private function getRequestBody(string $url, array $locations = []): array
     {
         if (empty($locations)) {
             $locations = $this->locations;
@@ -203,7 +203,7 @@ class GlobalPingWarmer extends BaseWarmer
         ];
     }
 
-    private function _getRateLimitFromResponse(Response $response): array
+    private function getRateLimitFromResponse(Response $response): array
     {
         $rateLimit = [];
 

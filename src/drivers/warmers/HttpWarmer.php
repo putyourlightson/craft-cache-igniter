@@ -85,7 +85,7 @@ class HttpWarmer extends BaseWarmer
                 }
 
                 try {
-                    $request = $this->_createRequest($url);
+                    $request = $this->createRequest($url);
                     yield $client->request($request);
 
                     if (is_callable($setProgressHandler)) {
@@ -102,7 +102,7 @@ class HttpWarmer extends BaseWarmer
             wait($promise);
         } // Catch all possible exceptions to avoid interrupting progress.
         catch (Throwable $exception) {
-            CacheIgniter::$plugin->log($this->_getAllExceptionMessages($exception));
+            CacheIgniter::$plugin->log($this->getAllExceptionMessages($exception));
         }
     }
 
@@ -130,7 +130,7 @@ class HttpWarmer extends BaseWarmer
     /**
      * Returns all messages for an exception, for easier debugging.
      */
-    private function _getAllExceptionMessages(Throwable $exception): string
+    private function getAllExceptionMessages(Throwable $exception): string
     {
         $messages = [
             $exception->getMessage(),
@@ -145,7 +145,7 @@ class HttpWarmer extends BaseWarmer
         return implode('. ', $messages);
     }
 
-    private function _createRequest(string $url): Request
+    private function createRequest(string $url): Request
     {
         $request = new Request($url);
 
