@@ -16,7 +16,9 @@ use yii\queue\Queue;
 class WarmJob extends BaseBatchedJob
 {
     /**
-     * @var Queue
+     * Used to set the progress on the appropriate queue.
+     *
+     * @see self::setProgressHandler()
      */
     private Queue $queue;
 
@@ -31,11 +33,10 @@ class WarmJob extends BaseBatchedJob
     }
 
     /**
-     * @inheritdoc
+     * Warms a batch of URLs in one go.
      */
     public function execute($queue): void
     {
-        // TODO: move this into the `BaseBatchedJob::before` method in Blitz 5.
         // Decrement (increase) priority so that subsequent batches are prioritised.
         if ($this->itemOffset === 0) {
             $this->priority--;
