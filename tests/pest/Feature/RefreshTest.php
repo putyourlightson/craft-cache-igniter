@@ -11,6 +11,7 @@ use putyourlightson\cacheigniter\drivers\warmers\GlobalPingWarmer;
 use putyourlightson\cacheigniter\records\UrlRecord;
 
 beforeEach(function() {
+    UrlRecord::deleteAll();
     CacheIgniter::$plugin->set('warmer', new GlobalPingWarmer());
     CacheIgniter::$plugin->settings->includedRefreshUriPatterns = [
         [

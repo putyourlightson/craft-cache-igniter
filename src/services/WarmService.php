@@ -24,17 +24,28 @@ class WarmService extends Component
      *
      * @return string[]
      */
-    public function getWarmableUrlsAndRemove(): array
+    public function getWarmableUrlsAndRemove(int $limit = null): array
     {
         $condition = ['<=', 'warmDate', Db::prepareDateForDb('now')];
         $urls = UrlRecord::find()
             ->select('url')
             ->where($condition)
+            ->limit($limit)
             ->column();
 
         UrlRecord::deleteAll($condition);
 
         return $urls;
+    }
+
+    /**
+     * Returns the number of URLs ready for warming.
+     */
+    public function getWarmableUrlCount(): int
+    {
+        return UrlRecord::find()
+            ->where(['<=', 'warmDate', Db::prepareDateForDb('now')])
+            ->count();
     }
 
     /**
