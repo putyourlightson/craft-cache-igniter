@@ -22,17 +22,8 @@
   "require-dev": {
     "craftcms/ecs": "dev-main",
     "craftcms/phpstan": "dev-main",
-    "markhuot/craft-pest-core": "v3.x-dev",
-    "mockery/mockery": "^1.0",
-    "putyourlightson/craft-blitz": "^5.0",
-    "putyourlightson/craft-generate-test-spec": "v2.x-dev"
+    "putyourlightson/craft-blitz": "^5.0"
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/bencroker/craft-pest-core"
-    }
-  ],
   "autoload": {
     "psr-4": {
       "putyourlightson\\cacheigniter\\": "src/"
