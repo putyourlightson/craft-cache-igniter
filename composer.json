@@ -1,7 +1,7 @@
 {
   "name": "putyourlightson/craft-cache-igniter",
   "description": "A global CDN and reverse proxy cache warmer.",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0",
   "type": "craft-plugin",
   "homepage": "https://putyourlightson.com/plugins/cache-igniter",
   "license": "proprietary",
@@ -17,14 +17,14 @@
     "php": "^8.2",
     "amphp/http-client": "^5.0",
     "amphp/parallel": "^2.0",
-    "craftcms/cms": "^5.0.0-beta.1"
+    "craftcms/cms": "^5.0"
   },
   "require-dev": {
     "craftcms/ecs": "dev-main",
     "craftcms/phpstan": "dev-main",
     "markhuot/craft-pest-core": "v3.x-dev",
     "mockery/mockery": "^1.0",
-    "putyourlightson/craft-blitz": "^5.0.0-beta.1",
+    "putyourlightson/craft-blitz": "^5.0",
     "putyourlightson/craft-generate-test-spec": "v2.x-dev"
   },
   "repositories": [
@@ -65,7 +65,7 @@
     "developer": "PutYourLightsOn",
     "developerUrl": "https://putyourlightson.com/",
     "documentationUrl": "https://putyourlightson.com/plugins/cache-igniter",
-    "changelogUrl": "https://raw.githubusercontent.com/putyourlightson/craft-cache-igniter/v2/CHANGELOG.md",
+    "changelogUrl": "https://raw.githubusercontent.com/putyourlightson/craft-cache-igniter/develop/CHANGELOG.md",
     "class": "putyourlightson\\cacheigniter\\CacheIgniter"
   }
 }
