@@ -73,12 +73,12 @@ class RefreshService extends Component
                 $uriPattern = $siteUriPattern['uriPattern'];
 
                 // Replace a blank string with the homepage with query strings allowed
-                if ($uriPattern == '') {
+                if ($uriPattern === '') {
                     $uriPattern = '^(\?.*)?$';
                 }
 
-                // Replace "*" with 0 or more characters as otherwise it'll throw an error
-                if ($uriPattern == '*') {
+                // Replace "*" with 0 or more characters as otherwise it’ll throw an error
+                if ($uriPattern === '*') {
                     $uriPattern = '.*';
                 }
 

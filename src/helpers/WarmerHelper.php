@@ -80,6 +80,7 @@ class WarmerHelper
     public static function createWarmer(string $type, array $settings = []): BaseWarmer
     {
         // Create a new object rather than using `Component::createComponent`, which can throw an exception if provided settings do not exist on the class.
+        /** @var BaseWarmer $warmer */
         $warmer = new $type();
         $warmer->setAttributes($settings, false);
 

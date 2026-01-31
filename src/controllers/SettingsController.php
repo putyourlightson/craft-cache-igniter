@@ -97,7 +97,7 @@ class SettingsController extends Controller
 
         Craft::$app->getPlugins()->savePluginSettings(CacheIgniter::$plugin, $settings->getAttributes());
 
-        Craft::$app->getSession()->setNotice(Craft::t('cache-igniter', 'Plugin settings saved.'));
+        Craft::$app->getSession()->setSuccess(Craft::t('cache-igniter', 'Plugin settings saved.'));
 
         return $this->redirectToPostedUrl();
     }
