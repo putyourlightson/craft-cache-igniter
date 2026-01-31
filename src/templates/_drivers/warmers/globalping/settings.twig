@@ -34,6 +34,14 @@
     addRowLabel: 'Add a location'|t('cache-igniter'),
 }) }}
 
+{{ forms.autosuggestField({
+    label: "API Access Token"|t('cache-igniter'),
+    instructions: "An API access token for your Globalping account (tokens can be created [here]({url}))."|t('cache-igniter', {url: 'https://dash.globalping.io/tokens'}),
+    suggestEnvVars: true,
+    name: 'apiAccessToken',
+    value: warmer.settings.apiAccessToken,
+}) }}
+
 {% set content %}
     <p id="rate-limit-result"></p>
     <button id="fetch-api-rate-limit" class="btn">

@@ -7,7 +7,7 @@ namespace putyourlightson\cacheigniter\controllers;
 
 use Craft;
 use craft\web\Controller;
-use putyourlightson\cacheigniter\drivers\warmers\GlobalPingWarmer;
+use putyourlightson\cacheigniter\CacheIgniter;
 use yii\base\Response;
 
 class WarmerController extends Controller
@@ -31,8 +31,7 @@ class WarmerController extends Controller
      */
     public function actionGetRateLimitDescription(): Response|string
     {
-        $warmer = new GlobalPingWarmer();
-        $rateLimitDescription = $warmer->getRateLimitDescription();
+        $rateLimitDescription = CacheIgniter::$plugin->warmer->getRateLimitDescription();
 
         if ($rateLimitDescription === null) {
             return $this->asFailure(Craft::t('cache-igniter', 'There was an error getting the warmer’s rate limit. See the logs for more details.'));

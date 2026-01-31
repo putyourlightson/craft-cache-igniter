@@ -6,6 +6,7 @@
 namespace putyourlightson\cacheigniter\drivers\warmers;
 
 use Craft;
+use craft\helpers\App;
 use craft\helpers\UrlHelper;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -36,6 +37,8 @@ class GlobalPingWarmer extends BaseWarmer
         'Germany',
         'Australia',
     ];
+
+    public ?string $apiAccessToken = null;
 
     private bool $rateLimitExceeded = false;
 
@@ -137,8 +140,8 @@ class GlobalPingWarmer extends BaseWarmer
             return $this->client;
         }
 
-        // https://www.jsdelivr.com/docs/api.globalping.io#post-/v1/measurements
-        $this->client = Craft::createGuzzleClient([
+        // https://globalping.io/docs/api.globalping.io
+        $config = [
             'base_uri' => self::API_ENDPOINT,
             'headers' => [
                 'Accept-Encoding' => 'br',
@@ -146,7 +149,14 @@ class GlobalPingWarmer extends BaseWarmer
                 'User-Agent' => 'CacheIgniter/1 (https://putyourlightson.com/plugins/cache-igniter)',
             ],
             'connect_timeout' => 10,
-        ]);
+        ];
+
+        $apiAccessToken = App::parseEnv($this->apiAccessToken);
+        if ($apiAccessToken) {
+            $config['headers']['Authorization'] = 'Bearer ' . App::parseEnv($apiAccessToken);
+        }
+
+        $this->client = Craft::createGuzzleClient($config);
 
         return $this->client;
     }
@@ -187,7 +197,7 @@ class GlobalPingWarmer extends BaseWarmer
         $path = parse_url($url, PHP_URL_PATH);
         $path .= $queryString ? '?' . $queryString : '';
 
-        // https://www.jsdelivr.com/docs/api.globalping.io#post-/v1/measurements
+        // https://globalping.io/docs/api.globalping.io
         return [
             'body' => json_encode([
                 'type' => 'http',

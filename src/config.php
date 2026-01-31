@@ -31,6 +31,7 @@ return [
         //        'Germany',
         //        'Australia',
         //    ],
+        //    'apiAccessToken' => '',
         //],
 
         // The warmer type classes to add to the plugin’s default warmer types.
