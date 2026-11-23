@@ -32,13 +32,7 @@ class WarmUtility extends Utility
      */
     public static function icon(): ?string
     {
-        $iconPath = Craft::getAlias('@putyourlightson/cacheigniter/icon-mask.svg');
-
-        if (!is_string($iconPath)) {
-            return null;
-        }
-
-        return $iconPath;
+        return Craft::getAlias('@putyourlightson/cacheigniter/icon-mask.svg');
     }
 
     /**
