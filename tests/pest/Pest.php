@@ -1,7 +1,11 @@
 <?php
 
-use markhuot\craftpest\test\TestCase;
+use craft\queue\Queue;
+use putyourlightson\cacheigniter\CacheIgniter;
 use putyourlightson\cacheigniter\records\UrlRecord;
+use putyourlightson\cacheigniter\tests\TestCase as IsolatedTestCase;
+
+require_once __DIR__ . '/TestCase.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +18,32 @@ use putyourlightson\cacheigniter\records\UrlRecord;
 |
 */
 
-uses(TestCase::class)
-    ->in('./');
+uses(IsolatedTestCase::class)
+    ->in('Architecture');
+
+uses(IsolatedTestCase::class)
+    ->beforeEach(function() {
+        $this->transaction = Craft::$app->getDb()->beginTransaction();
+        $this->originalAppQueue = Craft::$app->getQueue();
+        $this->originalQueue = CacheIgniter::$plugin->queue;
+        $this->originalWarmer = CacheIgniter::$plugin->get('warmer');
+        $this->settings = CacheIgniter::$plugin->settings->getAttributes();
+        $queue = new Queue(['channel' => 'igniter-feature-' . bin2hex(random_bytes(6))]);
+        Craft::$app->set('queue', $queue);
+        CacheIgniter::$plugin->queue = $queue;
+        UrlRecord::deleteAll();
+    })
+    ->afterEach(function() {
+        $this->transaction->rollBack();
+        Craft::$app->set('queue', $this->originalAppQueue);
+        CacheIgniter::$plugin->queue = $this->originalQueue;
+        CacheIgniter::$plugin->set('warmer', $this->originalWarmer);
+        CacheIgniter::$plugin->settings->setAttributes($this->settings, false);
+    })
+    ->in('Feature');
+
+uses(IsolatedTestCase::class)
+    ->in('Isolated');
 
 /*
 |--------------------------------------------------------------------------

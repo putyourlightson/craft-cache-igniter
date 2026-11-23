@@ -6,55 +6,69 @@
 namespace putyourlightson\cacheigniter\jobs;
 
 use Craft;
-use craft\base\Batchable;
 use craft\helpers\Queue as QueueHelper;
-use craft\queue\BaseBatchedJob;
-use putyourlightson\cacheigniter\batchers\UrlBatcher;
+use craft\queue\BaseJob;
+use craft\queue\Queue as CraftQueue;
 use putyourlightson\cacheigniter\CacheIgniter;
 use yii\queue\Queue;
+use yii\queue\RetryableJobInterface;
 
-class WarmJob extends BaseBatchedJob
+class WarmJob extends BaseJob implements RetryableJobInterface
 {
-    /**
-     * Used to set the progress on the appropriate queue.
-     *
-     * @see self::setProgressHandler()
-     */
+    public int $batchIndex = 0;
+
     private Queue $queue;
 
     /**
      * @inheritdoc
      */
-    public function init(): void
+    public function getDescription(): string
     {
-        parent::init();
+        $description = $this->description ?? Craft::t('cache-igniter', 'Warming cached URLs');
+        $pendingCount = CacheIgniter::$plugin->warm->getWarmableUrlCount();
+        $totalBatches = $this->batchIndex + max(1, (int)ceil($pendingCount / CacheIgniter::$plugin->settings->warmJobBatchSize));
+        if ($totalBatches <= 1) {
+            return $description;
+        }
 
-        $this->batchSize = CacheIgniter::$plugin->settings->warmJobBatchSize;
+        return Craft::t('app', '{description} (batch {index, number} of {total, number})', [
+            'description' => $description,
+            'index' => $this->batchIndex + 1,
+            'total' => $totalBatches,
+        ]);
     }
 
     /**
-     * Warms a batch of URLs in one go.
+     * @inheritdoc
      */
+    public function getTtr(): int
+    {
+        return CacheIgniter::$plugin->queue->ttr;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function canRetry($attempt, $error): bool
+    {
+        return $attempt < CacheIgniter::$plugin->settings->maxRetryAttempts;
+    }
+
     public function execute($queue): void
     {
-        // Decrement (increase) priority so that subsequent batches are prioritised.
-        if ($this->itemOffset === 0) {
-            $this->priority--;
-        }
-
         $this->queue = $queue;
+        CacheIgniter::$plugin->warm->warmPendingUrls([$this, 'setProgressHandler'], CacheIgniter::$plugin->settings->warmJobBatchSize);
 
-        /** @var string[] $urls */
-        $urls = $this->data()->getSlice($this->itemOffset, $this->batchSize);
-
-        CacheIgniter::$plugin->warmer->warmUrlsWithProgress($urls, [$this, 'setProgressHandler']);
-        $this->itemOffset += count($urls);
-
-        // Spawn another job if there are more items
-        if ($this->itemOffset < $this->totalItems()) {
-            $nextJob = clone $this;
-            $nextJob->batchIndex++;
-            QueueHelper::push($nextJob, $this->priority, 0, $this->ttr, $queue);
+        if ($queue instanceof CraftQueue && !$queue->isReserved($queue->getJobId())) {
+            return;
+        }
+        $priority = CacheIgniter::$plugin->warm->getWarmableUrlPriority();
+        if ($priority !== null) {
+            $nextJob = new self([
+                'description' => $this->description,
+                'batchIndex' => $this->batchIndex + 1,
+            ]);
+            QueueHelper::push($nextJob, $priority - 1, 0, $this->getTtr(), $queue);
         }
     }
 
@@ -63,28 +77,5 @@ class WarmJob extends BaseBatchedJob
         $progress = $total > 0 ? ($count / $total) : 0;
 
         $this->setProgress($this->queue, $progress, $label);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function defaultDescription(): string
-    {
-        return Craft::t('cache-igniter', 'Warming cached URLs');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function loadData(): Batchable
-    {
-        return new UrlBatcher();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function processItem(mixed $item): void
-    {
     }
 }

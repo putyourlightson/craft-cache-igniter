@@ -14,11 +14,6 @@ beforeEach(function() {
     CacheIgniter::$plugin->set('warmer', new GlobalPingWarmer());
 });
 
-afterEach(function() {
-    UrlRecord::deleteAll();
-    Craft::$app->queue->releaseAll();
-});
-
 test('Warming URLs with a progress handler creates records', function() {
     $url = UrlHelper::url('test');
     CacheIgniter::$plugin->warm->warmUrls([$url]);

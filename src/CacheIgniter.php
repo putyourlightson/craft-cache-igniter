@@ -59,7 +59,7 @@ class CacheIgniter extends Plugin
     /**
      * @inheritdoc
      */
-    public string $schemaVersion = '1.0.0';
+    public string $schemaVersion = '2.2.0';
 
     /**
      * The queue to use for running jobs.

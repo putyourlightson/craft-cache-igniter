@@ -57,9 +57,9 @@ class WarmController extends Controller
      */
     public function actionPendingUrls(): int
     {
-        $urls = CacheIgniter::$plugin->warm->getWarmableUrlsAndRemove();
+        $count = CacheIgniter::$plugin->warm->getWarmableUrlCount();
 
-        if (empty($urls)) {
+        if ($count === 0) {
             $this->stderr(Craft::t('cache-igniter', 'There are no pending URLs to warm.') . PHP_EOL, BaseConsole::FG_RED);
 
             return ExitCode::OK;
@@ -67,8 +67,8 @@ class WarmController extends Controller
 
         $this->stdout(Craft::t('cache-igniter', 'Warming pending URLs...') . PHP_EOL, BaseConsole::FG_YELLOW);
 
-        Console::startProgress(0, count($urls), '', 0.8);
-        CacheIgniter::$plugin->warm->warmUrls($urls, [$this, 'setProgressHandler']);
+        Console::startProgress(0, $count, '', 0.8);
+        CacheIgniter::$plugin->warm->warmPendingUrls([$this, 'setProgressHandler']);
         Console::endProgress();
 
         $this->stdout(Craft::t('cache-igniter', 'Pending URLs successfully warmed.') . PHP_EOL, BaseConsole::FG_GREEN);

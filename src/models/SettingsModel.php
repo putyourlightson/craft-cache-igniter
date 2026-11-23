@@ -74,10 +74,19 @@ class SettingsModel extends Model
     public int $warmJobPriority = 110;
 
     /**
-     * The maximum length of URLs that may be warmed. Increasing this value requires manually updating the limit in the `url` column of the `cacheigniter_urls` database table. Note that the prefix length limit is 3072 bytes for InnoDB tables that use the DYNAMIC or COMPRESSED row format. Assuming a `utf8mb4` character set and a maximum of 4 bytes for each character, this is 768 characters.
-     * https://dev.mysql.com/doc/refman/8.0/en/column-indexes.html#column-indexes-prefix
+     * The maximum length of URLs that may be warmed. Increasing this beyond the `url` column length requires updating the database column.
      */
-    public int $maxUrlLength = 500;
+    public int $maxUrlLength = 2048;
+
+    /**
+     * The number of seconds to wait for a pending-work mutex.
+     */
+    public int $mutexTimeout = 1;
+
+    /**
+     * The maximum number of attempts for a failed warm job.
+     */
+    public int $maxRetryAttempts = 5;
 
     /**
      * @inheritdoc

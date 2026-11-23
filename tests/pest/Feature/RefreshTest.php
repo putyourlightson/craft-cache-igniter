@@ -27,11 +27,6 @@ beforeEach(function() {
     ];
 });
 
-afterEach(function() {
-    UrlRecord::deleteAll();
-    Craft::$app->queue->releaseAll();
-});
-
 test('Refreshing a site URI with a matching included refresh URI pattern creates a record and a queue job', function() {
     $uri = 'test';
     CacheIgniter::$plugin->refresh->refreshSiteUris([
